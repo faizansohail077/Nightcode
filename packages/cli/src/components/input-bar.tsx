@@ -94,11 +94,7 @@ const InputBar = ({ onSubmit, disabled = false }: Props) => {
 
     return (
         <box width={"100%"} alignItems="center">
-            <box
-                border={["left"]}
-                borderColor={"cyan"}
-                // add border
-            >
+            <box border={["left"]} borderColor={"cyan"} width={"100%"}>
                 <box
                     position="relative"
                     justifyContent="center"

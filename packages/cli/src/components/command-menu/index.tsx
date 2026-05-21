@@ -29,7 +29,7 @@ export function CommandMenu({ onExecute, onSelect, query, scrollRef, selectedInd
     return (
         <scrollbox ref={scrollRef} height={visibleHeight}>
             {filtered.map((cmd, i) => {
-                const isSelected = (i = selectedIndex);
+                const isSelected = i === selectedIndex;
                 return (
                     <box
                         key={cmd.value}
