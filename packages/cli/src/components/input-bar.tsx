@@ -31,11 +31,28 @@ const InputBar = ({ onSubmit, disabled = false }: Props) => {
         setSelectedIndex,
         showCommandMenu,
     } = useCommandMenu();
-
-    const handleCommandExecute = useCallback((index: number) => {
-        const command = resolveCommand(index);
-        handleCommand(command);
-    }, []);
+    const handleCommand = useCallback(
+        (command: Command | undefined) => {
+            const textarea = textareaRef.current;
+            if (!textarea || !command) return;
+            textarea.setText("");
+            if (command.action) {
+                command.action({
+                    exit: () => renderer.destroy(),
+                });
+            } else {
+                textarea.insertText(command.value + " ");
+            }
+        },
+        [renderer],
+    );
+    const handleCommandExecute = useCallback(
+        (index: number) => {
+            const command = resolveCommand(index);
+            handleCommand(command);
+        },
+        [handleCommand, resolveCommand],
+    );
 
     const handleTextareaContentChange = useCallback(() => {
         const textarea = textareaRef.current;
@@ -56,22 +73,6 @@ const InputBar = ({ onSubmit, disabled = false }: Props) => {
         onSubmit(text);
         textarea.setText("");
     }, [disabled, onSubmit]);
-
-    const handleCommand = useCallback(
-        (command: Command | undefined) => {
-            const textarea = textareaRef.current;
-            if (!textarea || !command) return;
-            textarea.setText("");
-            if (command.action) {
-                command.action({
-                    exit: () => renderer.destroy(),
-                });
-            } else {
-                textarea.insertText(command.value + " ");
-            }
-        },
-        [renderer],
-    );
 
     useEffect(() => {
         const textarea = textareaRef.current;
